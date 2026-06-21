@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Screen } from '../game/types';
 import { useSettings } from './useSettings';
+import { useProgress } from './useProgress';
 import TitleScreen from '../components/TitleScreen';
 import GameScreen from '../components/GameScreen';
 import SettingsScreen from '../components/SettingsScreen';
@@ -12,12 +13,20 @@ import ComingSoon from '../components/ComingSoon';
 export default function App() {
   const [screen, setScreen] = useState<Screen>('title');
   const { settings, update } = useSettings();
+  const { progress, update: updateProgress } = useProgress();
 
   switch (screen) {
     case 'adventure':
-      return <GameScreen mode="adventure" settings={settings} onExit={() => setScreen('title')} />;
     case 'playground':
-      return <GameScreen mode="playground" settings={settings} onExit={() => setScreen('title')} />;
+      return (
+        <GameScreen
+          mode={screen}
+          settings={settings}
+          progress={progress}
+          onProgress={updateProgress}
+          onExit={() => setScreen('title')}
+        />
+      );
     case 'multiplayer':
       return <ComingSoon onBack={() => setScreen('title')} />;
     case 'settings':
@@ -30,6 +39,6 @@ export default function App() {
       );
     case 'title':
     default:
-      return <TitleScreen onNavigate={setScreen} />;
+      return <TitleScreen bestScore={progress.bestScore} onNavigate={setScreen} />;
   }
 }

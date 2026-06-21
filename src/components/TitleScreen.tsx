@@ -4,8 +4,10 @@ import { GAME_TAGLINE, GAME_TITLE } from '../game/constants';
 // The colorful title screen. Big chunky buttons, a wiggling worm emoji, and the
 // game's tagline. Exactly the buttons the brief asks for.
 export default function TitleScreen({
+  bestScore,
   onNavigate,
 }: {
+  bestScore: number;
   onNavigate: (screen: Screen) => void;
 }) {
   return (
@@ -15,6 +17,10 @@ export default function TitleScreen({
       </div>
       <h1 className="title-heading">{GAME_TITLE}</h1>
       <p className="title-tagline">“{GAME_TAGLINE}”</p>
+
+      {bestScore > 0 && (
+        <p className="title-best">🏆 Best Score: {bestScore}</p>
+      )}
 
       <div className="title-buttons">
         <button className="btn green big" onClick={() => onNavigate('adventure')}>
@@ -59,9 +65,17 @@ export default function TitleScreen({
         }
         .title-tagline {
           font-size: clamp(16px, 4vw, 26px);
-          margin: 0 0 18px;
+          margin: 0 0 8px;
           color: var(--ink);
           font-weight: 700;
+        }
+        .title-best {
+          margin: 0 0 14px;
+          font-weight: 800;
+          color: var(--candy-purple);
+          background: rgba(255,255,255,0.7);
+          padding: 6px 16px;
+          border-radius: 999px;
         }
         .title-buttons {
           display: flex;

@@ -12,6 +12,7 @@ import {
   FOOD_TO_GROW,
   LIFE_DRAIN_PER_SEC,
   LIFE_REFILL_PER_SEC,
+  UNLOCK_THRESHOLDS,
 } from './constants';
 import { DEFAULT_UNLOCKED, MORPHS } from './morphs/morphData';
 import { Player } from './player/Player';
@@ -56,12 +57,19 @@ export class GameEngine {
   private lastAbility: AbilityId | null = null;
   private lastAbilityAt = 0;
   private unlockedMorphs: MorphId[] = [...DEFAULT_UNLOCKED];
+  private justUnlocked: MorphId | null = null;
+  private justUnlockedAt = 0;
 
   // Snapshot pub/sub for React.
   private subscribers = new Set<(s: GameStateSnapshot) => void>();
 
-  constructor() {
+  /**
+   * @param startUnlocked Morphs already earned in previous sessions (loaded from
+   *   saved progress) so the player keeps what they unlocked.
+   */
+  constructor(startUnlocked: MorphId[] = DEFAULT_UNLOCKED) {
     this.food = generateFood();
+    this.unlockedMorphs = Array.from(new Set([...DEFAULT_UNLOCKED, ...startUnlocked]));
   }
 
   // ---- lifecycle ----
@@ -170,6 +178,18 @@ export class GameEngine {
           this.foodEatenStreak = 0;
           this.bigTimer = BIG_DURATION_SEC; // grow big!
         }
+        this.checkUnlocks();
+      }
+    }
+  }
+
+  /** Unlock new morphs as the score passes each progression threshold. */
+  private checkUnlocks() {
+    for (const { score, morph } of UNLOCK_THRESHOLDS) {
+      if (this.score >= score && !this.unlockedMorphs.includes(morph)) {
+        this.unlockedMorphs.push(morph);
+        this.justUnlocked = morph;
+        this.justUnlockedAt = this.elapsed;
       }
     }
   }
@@ -260,7 +280,19 @@ export class GameEngine {
       lastAbility: this.lastAbility,
       lastAbilityAt: this.lastAbilityAt,
       unlockedMorphs: [...this.unlockedMorphs],
+      justUnlocked: this.justUnlocked,
+      justUnlockedAt: this.justUnlockedAt,
     };
+  }
+
+  /** Current score — used by the React layer to persist best-score progress. */
+  getScore() {
+    return this.score;
+  }
+
+  /** Current unlocked morphs — used by the React layer to persist progress. */
+  getUnlockedMorphs(): MorphId[] {
+    return [...this.unlockedMorphs];
   }
 
   subscribe(fn: (s: GameStateSnapshot) => void): () => void {

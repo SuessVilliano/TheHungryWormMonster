@@ -26,6 +26,17 @@ export const BIG_DURATION_SEC = 8;
 /** Ability cooldowns (seconds) so buttons feel snappy but not spammy. */
 export const ABILITY_COOLDOWN = 0.4;
 
+/**
+ * Progression: reach these scores to unlock new morphs. Gives little players a
+ * reason to keep collecting, and the morph menu lights up as they earn each one.
+ */
+export const UNLOCK_THRESHOLDS: { score: number; morph: import('./types').MorphId }[] = [
+  { score: 8, morph: 'dino' },
+  { score: 16, morph: 'cloud' },
+  { score: 26, morph: 'rock' },
+  { score: 38, morph: 'firefly' },
+];
+
 /** Friendly bright palette (sky, ground, water, candy accents). */
 export const COLORS = {
   sky: 0xafe9ff,

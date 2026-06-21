@@ -9,7 +9,7 @@ export const MORPHS: Record<MorphId, MorphDefinition> = {
     name: 'Worm Monster',
     emoji: '🪱',
     description: 'The Really Hungry Worm Monster! Wiggles, eats, and roars.',
-    color: 0x9be36b,
+    color: 0x1c1c1c, // a goofy black worm
     moveSpeed: 9,
     jumpStrength: 11,
     needsWater: false,

@@ -7,15 +7,19 @@ import { MORPHS } from '../game/morphs/morphData';
 export default function HUD({
   snapshot,
   mode,
+  bestScore,
   onExit,
   onToggleMode,
   onOpenMorph,
+  onHelp,
 }: {
   snapshot: GameStateSnapshot;
   mode: 'adventure' | 'playground';
+  bestScore: number;
   onExit: () => void;
   onToggleMode: () => void;
   onOpenMorph: () => void;
+  onHelp: () => void;
 }) {
   const def = MORPHS[snapshot.morphId];
 
@@ -29,14 +33,20 @@ export default function HUD({
         <div className="hud-pill">
           ⭐ <strong>{snapshot.score}</strong>
         </div>
+        <div className="hud-pill best-pill" title="Your best score so far">
+          🏆 {Math.max(bestScore, snapshot.score)}
+        </div>
         <div className="hud-pill">
           🍎 {snapshot.foodCollected}/{snapshot.foodTotal}
         </div>
         {snapshot.isBig && <div className="hud-pill big-pill">BIG! 💪</div>}
       </div>
 
-      {/* Top-right: mode toggle + morph badge */}
+      {/* Top-right: help + mode toggle + morph badge */}
       <div className="hud-top-right">
+        <button className="btn ghost" onClick={onHelp} title="How to play">
+          ❓
+        </button>
         <button className="btn ghost" onClick={onToggleMode} title="Switch 3D / 2D (V)">
           {snapshot.renderMode}
         </button>
@@ -88,6 +98,7 @@ export default function HUD({
           box-shadow: var(--shadow);
         }
         .big-pill { background: var(--sun-yellow); }
+        .best-pill { background: rgba(255, 211, 78, 0.85); }
         .hud-morph { font-size: clamp(13px, 3vw, 18px); }
         .hud-lifebar {
           position: absolute; top: 64px; left: 50%; transform: translateX(-50%);

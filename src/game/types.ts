@@ -74,6 +74,9 @@ export interface GameStateSnapshot {
   lastAbilityAt: number;
   /** Unlocked morph ids, so the morph menu can show locks. */
   unlockedMorphs: MorphId[];
+  /** A morph that was JUST unlocked this session, for a celebration toast. */
+  justUnlocked: MorphId | null;
+  justUnlockedAt: number;
 }
 
 /** Player-tunable settings (the parent-safe settings screen). */
