@@ -1,0 +1,82 @@
+/* Global styles for The Really Hungry Worm Monster.
+   Big, bright, rounded and friendly — designed for little fingers on phones. */
+
+:root {
+  --candy-pink: #ff7ac7;
+  --candy-purple: #b06bff;
+  --leaf-green: #7ed957;
+  --sky-blue: #4fc3f7;
+  --sun-yellow: #ffd34e;
+  --ink: #2b2150;
+  --ui-radius: 22px;
+  --shadow: 0 8px 0 rgba(0, 0, 0, 0.15);
+  font-family: 'Baloo 2', 'Comic Sans MS', 'Trebuchet MS', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: #bdeaff;
+  color: var(--ink);
+  touch-action: none;
+  user-select: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+}
+
+/* A reusable big chunky kid-friendly button. */
+.btn {
+  font-weight: 800;
+  font-size: clamp(16px, 3.5vw, 24px);
+  color: white;
+  background: var(--candy-purple);
+  border-radius: var(--ui-radius);
+  padding: 16px 26px;
+  box-shadow: var(--shadow);
+  transition: transform 0.08s ease, filter 0.08s ease;
+  letter-spacing: 0.5px;
+}
+.btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+}
+.btn.big {
+  font-size: clamp(20px, 5vw, 34px);
+  padding: 22px 40px;
+}
+.btn.green { background: var(--leaf-green); }
+.btn.pink { background: var(--candy-pink); }
+.btn.blue { background: var(--sky-blue); }
+.btn.yellow { background: var(--sun-yellow); color: var(--ink); }
+.btn.ghost {
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--ink);
+}
+.btn:disabled {
+  filter: grayscale(0.5) brightness(0.9);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
